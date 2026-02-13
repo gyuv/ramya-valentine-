@@ -1,0 +1,61 @@
+body {
+  margin: 0;
+  font-family: 'Segoe UI', sans-serif;
+  background: radial-gradient(circle at top, #0f2027, #000814);
+  color: white;
+  overflow-x: hidden;
+}
+
+.intro {
+  height: 100vh;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  background: linear-gradient(to bottom, #020111, #000814);
+  text-align: center;
+}
+
+.title {
+  font-size: 3rem;
+  color: gold;
+  text-shadow: 0 0 20px gold;
+}
+
+.subtitle {
+  opacity: 0.8;
+}
+
+.timeline {
+  padding: 100px 20px;
+}
+
+.moment {
+  margin: 150px 0;
+  opacity: 0;
+  transform: translateY(50px);
+}
+
+.boy, .girl {
+  position: fixed;
+  bottom: 50px;
+  width: 100px;
+  height: 200px;
+  background: white;
+  filter: blur(3px);
+}
+
+.boy {
+  left: -150px;
+}
+
+.girl {
+  right: 50px;
+}
+
+#hugCanvas {
+  position: fixed;
+  top: 0;
+  left: 0;
+  pointer-events: none;
+}
