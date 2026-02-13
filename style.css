@@ -1,105 +1,111 @@
-body {
-  margin: 0;
-  font-family: 'Segoe UI', sans-serif;
-  background: radial-gradient(circle at center, #0b1a3a, #050d1f);
-  color: white;
-  overflow-x: hidden;
-  scroll-behavior: smooth;
+window.addEventListener("load", function () {
+
+gsap.registerPlugin(MotionPathPlugin);
+
+// Intro animation
+gsap.to(".title",{opacity:1,y:-20,duration:2});
+gsap.to(".subtitle",{opacity:1,delay:1,duration:2});
+
+// Timeline stagger reveal
+const moments=document.querySelectorAll(".moment");
+
+function revealMoments(){
+ moments.forEach((el,i)=>{
+  const rect=el.getBoundingClientRect();
+  if(rect.top<window.innerHeight*0.85){
+    gsap.to(el,{
+      opacity:1,
+      y:0,
+      duration:1.2,
+      delay:i*0.2,
+      ease:"power3.out"
+    });
+  }
+ });
 }
 
-/* Intro */
-.intro {
-  height: 100vh;
-  display:flex;
-  flex-direction:column;
-  justify-content:center;
-  align-items:center;
-  text-align:center;
+window.addEventListener("scroll",revealMoments);
+
+// Runner scroll control
+window.addEventListener("scroll",function(){
+ const progress=window.scrollY/
+ (document.body.scrollHeight-window.innerHeight);
+ gsap.to(".runner",{x:progress*(window.innerWidth-150),duration:0.3});
+});
+
+// Flight animation
+const path=document.querySelector("#flightPath");
+const plane=document.querySelector("#plane");
+
+gsap.set(plane,{
+ motionPath:{path:path,align:path,autoRotate:true}
+});
+
+window.addEventListener("scroll",function(){
+ const progress=window.scrollY/
+ (document.body.scrollHeight-window.innerHeight);
+ gsap.to(plane,{
+   motionPath:{path:path,align:path,autoRotate:true},
+   duration:0.5,
+   ease:"none",
+   progress:progress
+ });
+});
+
+// Fireworks (single trigger)
+let fired=false;
+const canvas=document.getElementById("fireworks");
+const ctx=canvas.getContext("2d");
+canvas.width=window.innerWidth;
+canvas.height=window.innerHeight;
+
+function launchFireworks(){
+ for(let i=0;i<150;i++){
+  let x=canvas.width/2;
+  let y=canvas.height/2;
+  let vx=(Math.random()-0.5)*8;
+  let vy=(Math.random()-0.5)*8;
+  animateParticle(x,y,vx,vy);
+ }
 }
 
-.title {
-  font-size:3rem;
-  opacity:0;
+function animateParticle(x,y,vx,vy){
+ let life=100;
+ function draw(){
+  if(life<=0) return;
+  ctx.fillStyle="rgba(255,215,0,0.8)";
+  ctx.fillRect(x,y,3,3);
+  x+=vx;
+  y+=vy;
+  life--;
+  requestAnimationFrame(draw);
+ }
+ draw();
 }
 
-.subtitle {
-  opacity:0;
-}
+window.addEventListener("scroll",function(){
+ if(window.innerHeight+window.scrollY>=document.body.offsetHeight-10 && !fired){
+  fired=true;
+  launchFireworks();
+  gsap.to(".couple",{opacity:1,duration:2});
+ }
+});
 
-/* Timeline */
-.timeline {
-  padding:100px 20px;
-}
+// Countdown
+const target=new Date("August 15, 2026 00:00:00").getTime();
+const countdown=document.getElementById("countdown");
 
-.moment {
-  margin:150px 0;
-  font-size:1.6rem;
-  opacity:0;
-  transform:translateY(60px);
-}
+setInterval(function(){
+ const now=new Date().getTime();
+ const diff=target-now;
+ const days=Math.floor(diff/(1000*60*60*24));
+ const hours=Math.floor((diff%(1000*60*60*24))/(1000*60*60));
+ const mins=Math.floor((diff%(1000*60*60))/(1000*60));
+ const secs=Math.floor((diff%(1000*60))/1000);
 
-/* Temple Aura */
-.temple-section {
-  position:relative;
-}
+ countdown.innerHTML=
+ `Anniversary Countdown ❤️<br>
+ ${days} Days ${hours} Hrs ${mins} Min ${secs} Sec`;
+},1000);
 
-.temple-aura {
-  position:absolute;
-  left:50%;
-  transform:translateX(-50%);
-  width:300px;
-  height:300px;
-  background:radial-gradient(circle, rgba(255,215,0,0.6), transparent 70%);
-  border-radius:50%;
-  animation:aura 4s infinite ease-in-out;
-  z-index:-1;
-}
-
-@keyframes aura {
-  0%,100% {transform:translateX(-50%) scale(1);opacity:0.6;}
-  50% {transform:translateX(-50%) scale(1.2);opacity:1;}
-}
-
-/* Flight */
-#flightSVG {
-  width:100%;
-  height:200px;
-  margin-top:50px;
-}
-
-/* Runner */
-.runner-container {
-  position:fixed;
-  bottom:30px;
-  left:0;
-  width:100%;
-  pointer-events:none;
-}
-
-.runner {
-  width:120px;
-  position:absolute;
-  left:0;
-}
-
-/* Couple */
-.couple {
-  height:300px;
-  background:radial-gradient(circle, gold 10%, transparent 60%);
-  opacity:0;
-}
-
-/* Fireworks */
-canvas {
-  position:fixed;
-  top:0;
-  left:0;
-  pointer-events:none;
-}
-
-/* Countdown */
-.countdown {
-  text-align:center;
-  padding:100px;
-  font-size:1.8rem;
-}
+});
