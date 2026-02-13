@@ -1,61 +1,41 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="UTF-8" />
-<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Ramya ❤️ Yuvaraj</title>
 
 <link rel="stylesheet" href="style.css">
 
-<!-- GSAP -->
-<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/ScrollTrigger.min.js"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/MotionPathPlugin.min.js"></script>
-
+<script src="https://cdn.jsdelivr.net/npm/gsap@3.12.2/dist/gsap.min.js"></script>
 </head>
+
 <body>
 
-<!-- Cinematic Intro -->
-<section class="intro">
+<div class="intro">
     <h1 class="title">Ramya ❤️ Yuvaraj</h1>
-    <p class="subtitle">A Journey Written in the Stars ✨</p>
-</section>
+    <p class="subtitle">Our Journey Beyond Infinity</p>
+</div>
 
-<!-- Timeline Section -->
 <section class="timeline">
 
-    <div class="moment">
-        <h2>🍽 The Biryani Destiny</h2>
-        <p>பிரியாணி தேடி வந்த பயணத்தில்,
-பெரியதொரு தேவதையை கண்டேனே!</p>
-    </div>
-
-    <div class="moment">
-        <h2>💬 The Tattoo Question</h2>
-        <p>"டாட்டூ" கேட்ட உன் ஒற்றை வினாவில்,
-என் மொத்த இதயத்தையும் தந்தேனே!</p>
-    </div>
-
-    <div class="moment">
-        <h2>🌙 Instagram Nights</h2>
-        <p>இன்ஸ்டாகிராம் இரவுகளும், கல்லூரி இடைவெளியும்,
-நம் காதலை மெருகேற்றிய ரகசியங்கள்!</p>
-    </div>
-
-    <div class="moment">
-        <h2>🙏 Vadapalani Blessing</h2>
-        <p>வடாபழனி முருகன் சாட்சியாய் கைகோர்த்து...</p>
-    </div>
+    <div class="moment">Instagram Nights ✨</div>
+    <div class="moment">College Break Secrets 💌</div>
+    <div class="moment">Vadapalani Murugan Blessings 🙏</div>
+    <div class="moment">Malaysia ✈ Bali 🌊</div>
+    <div class="moment">Forever Together 💍</div>
 
 </section>
 
-<!-- Running Boy -->
-<div class="boy"></div>
-<div class="girl"></div>
+<div class="runner-container">
+    <div class="boy"></div>
+</div>
 
-<!-- Hug Particle Canvas -->
-<canvas id="hugCanvas"></canvas>
+<canvas id="particles"></canvas>
+
+<div class="countdown" id="countdown"></div>
 
 <script src="script.js"></script>
+
 </body>
 </html>
