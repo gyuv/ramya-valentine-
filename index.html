@@ -1,41 +1,105 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Ramya ❤️ Yuvaraj</title>
+body {
+  margin: 0;
+  font-family: 'Segoe UI', sans-serif;
+  background: radial-gradient(circle at center, #0b1a3a, #050d1f);
+  color: white;
+  overflow-x: hidden;
+  scroll-behavior: smooth;
+}
 
-<link rel="stylesheet" href="style.css">
+/* Intro */
+.intro {
+  height: 100vh;
+  display:flex;
+  flex-direction:column;
+  justify-content:center;
+  align-items:center;
+  text-align:center;
+}
 
-<script src="https://cdn.jsdelivr.net/npm/gsap@3.12.2/dist/gsap.min.js"></script>
-</head>
+.title {
+  font-size:3rem;
+  opacity:0;
+}
 
-<body>
+.subtitle {
+  opacity:0;
+}
 
-<div class="intro">
-    <h1 class="title">Ramya ❤️ Yuvaraj</h1>
-    <p class="subtitle">Our Journey Beyond Infinity</p>
-</div>
+/* Timeline */
+.timeline {
+  padding:100px 20px;
+}
 
-<section class="timeline">
+.moment {
+  margin:150px 0;
+  font-size:1.6rem;
+  opacity:0;
+  transform:translateY(60px);
+}
 
-    <div class="moment">Instagram Nights ✨</div>
-    <div class="moment">College Break Secrets 💌</div>
-    <div class="moment">Vadapalani Murugan Blessings 🙏</div>
-    <div class="moment">Malaysia ✈ Bali 🌊</div>
-    <div class="moment">Forever Together 💍</div>
+/* Temple Aura */
+.temple-section {
+  position:relative;
+}
 
-</section>
+.temple-aura {
+  position:absolute;
+  left:50%;
+  transform:translateX(-50%);
+  width:300px;
+  height:300px;
+  background:radial-gradient(circle, rgba(255,215,0,0.6), transparent 70%);
+  border-radius:50%;
+  animation:aura 4s infinite ease-in-out;
+  z-index:-1;
+}
 
-<div class="runner-container">
-    <div class="boy"></div>
-</div>
+@keyframes aura {
+  0%,100% {transform:translateX(-50%) scale(1);opacity:0.6;}
+  50% {transform:translateX(-50%) scale(1.2);opacity:1;}
+}
 
-<canvas id="particles"></canvas>
+/* Flight */
+#flightSVG {
+  width:100%;
+  height:200px;
+  margin-top:50px;
+}
 
-<div class="countdown" id="countdown"></div>
+/* Runner */
+.runner-container {
+  position:fixed;
+  bottom:30px;
+  left:0;
+  width:100%;
+  pointer-events:none;
+}
 
-<script src="script.js"></script>
+.runner {
+  width:120px;
+  position:absolute;
+  left:0;
+}
 
-</body>
-</html>
+/* Couple */
+.couple {
+  height:300px;
+  background:radial-gradient(circle, gold 10%, transparent 60%);
+  opacity:0;
+}
+
+/* Fireworks */
+canvas {
+  position:fixed;
+  top:0;
+  left:0;
+  pointer-events:none;
+}
+
+/* Countdown */
+.countdown {
+  text-align:center;
+  padding:100px;
+  font-size:1.8rem;
+}
