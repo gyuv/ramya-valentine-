@@ -1,1 +1,232 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Ramya ❤️ Yuvaraj</title>
+
+<!-- GSAP Core -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/ScrollTrigger.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/MotionPathPlugin.min.js"></script>
+
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+
+body{
+background:linear-gradient(to bottom,#0a0f2c,#000);
+color:white;
+font-family:Arial, sans-serif;
+overflow-x:hidden;
+}
+
+section{
+height:100vh;
+display:flex;
+flex-direction:column;
+justify-content:center;
+align-items:center;
+position:relative;
+text-align:center;
+}
+
+h1{
+font-size:80px;
+background:linear-gradient(90deg,#ffd700,#fff,#ffd700);
+-webkit-background-clip:text;
+-webkit-text-fill-color:transparent;
+opacity:0;
+}
+
+h2{
+font-size:32px;
+margin-bottom:20px;
+}
+
+#intro{
+height:100vh;
+display:flex;
+justify-content:center;
+align-items:center;
+background:black;
+}
+
+.figure{
+position:fixed;
+bottom:0;
+height:250px;
+filter:brightness(0) invert(1);
+opacity:0.9;
+}
+
+#boy{
+left:-200px;
+}
+
+#girl{
+right:80px;
+opacity:0;
+}
+
+#flightPath{
+width:80%;
+height:300px;
+}
+
+#plane{
+transform-origin:center;
+}
+
+canvas{
+position:fixed;
+top:0;
+left:0;
+pointer-events:none;
+}
+
+.signature{
+margin-top:30px;
+font-size:26px;
+opacity:0;
+}
+
+.countdown{
+font-size:30px;
+margin-top:20px;
+}
+</style>
+</head>
+
+<body>
+
+<audio id="music" src="https://assets.mixkit.co/music/preview/mixkit-love-romantic-ambient-120.mp3" loop></audio>
+<audio id="bells" src="https://assets.mixkit.co/sfx/preview/mixkit-temple-bell-588.mp3"></audio>
+
+<div id="intro">
+    <h1 id="title">Ramya</h1>
+</div>
+
+<img id="boy" class="figure" src="https://i.ibb.co/VpZJ7pH/male-shadow.png">
+<img id="girl" class="figure" src="https://i.ibb.co/F5KJ3cX/female-shadow.png">
+
+<section>
+    <h2>15 August 2021</h2>
+</section>
+
+<section>
+    <h2>She Appeared ✨</h2>
+</section>
+
+<section>
+    <h2>Malaysia → Bali</h2>
+    <svg id="flightPath" viewBox="0 0 1000 300">
+        <path id="planeRoute"
+            d="M50 200 Q 500 -100 950 200"
+            stroke="white"
+            fill="transparent"/>
+        <circle id="plane" r="8" fill="white"/>
+    </svg>
+</section>
+
+<section>
+    <h2>The Hug 💞</h2>
+</section>
+
+<section>
+    <h2>15 August 2026</h2>
+    <div class="countdown" id="countdown"></div>
+    <div class="signature" id="signature">Ramya ❤️ Yuvaraj</div>
+</section>
+
+<canvas id="fireworks"></canvas>
+
+<script>
+gsap.registerPlugin(ScrollTrigger, MotionPathPlugin);
+
+const music = document.getElementById("music");
+const bells = document.getElementById("bells");
+
+window.addEventListener("click", () => {
+    bells.play();
+    music.volume = 0.3;
+    music.play();
+}, { once: true });
+
+/* Intro Fade */
+gsap.to("#title", { opacity:1, duration:3 });
+gsap.to("#intro", { opacity:0, delay:4, duration:2 });
+
+/* Master Scroll */
+let master = gsap.timeline({
+    scrollTrigger:{
+        trigger:"body",
+        start:"top top",
+        end:"bottom bottom",
+        scrub:1
+    }
+});
+
+/* Boy Running */
+master.to("#boy", { x:600, duration:2 });
+
+/* Girl Reveal */
+master.to("#girl", { opacity:1, duration:1 });
+
+/* Plane Motion */
+gsap.to("#plane",{
+    scrollTrigger:{
+        trigger:"#flightPath",
+        start:"top center",
+        end:"bottom center",
+        scrub:1
+    },
+    motionPath:{
+        path:"#planeRoute",
+        align:"#planeRoute",
+        autoRotate:true
+    }
+});
+
+/* Hug Trigger */
+ScrollTrigger.create({
+    trigger:".signature",
+    start:"top 80%",
+    onEnter:()=>{
+        launchFireworks();
+        gsap.to("#signature",{opacity:1,duration:2});
+    }
+});
+
+/* Fireworks */
+function launchFireworks(){
+    const canvas=document.getElementById("fireworks");
+    const ctx=canvas.getContext("2d");
+    canvas.width=window.innerWidth;
+    canvas.height=window.innerHeight;
+
+    for(let i=0;i<250;i++){
+        let x=Math.random()*canvas.width;
+        let y=Math.random()*canvas.height/2;
+        ctx.beginPath();
+        ctx.arc(x,y,2,0,Math.PI*2);
+        ctx.fillStyle=`hsl(${Math.random()*360},100%,60%)`;
+        ctx.fill();
+    }
+}
+
+/* Countdown */
+let target=new Date("Aug 15, 2026 00:00:00").getTime();
+setInterval(()=>{
+let now=new Date().getTime();
+let diff=target-now;
+let d=Math.floor(diff/(1000*60*60*24));
+let h=Math.floor((diff%(1000*60*60*24))/(1000*60*60));
+let m=Math.floor((diff%(1000*60*60))/(1000*60));
+let s=Math.floor((diff%(1000*60))/1000);
+document.getElementById("countdown").innerHTML=`${d}d ${h}h ${m}m ${s}s`;
+},1000);
+</script>
+
+</body>
+</html>
 
