@@ -1,92 +1,85 @@
 window.addEventListener("load", function () {
 
-  gsap.registerPlugin(ScrollTrigger, MotionPathPlugin);
+    // Intro animation
+    gsap.to(".title", {opacity:1, y:-20, duration:2});
+    gsap.to(".subtitle", {opacity:1, delay:1, duration:2});
 
-  console.log("GSAP Loaded:", typeof gsap);
+    // Timeline fade on scroll (manual)
+    const moments = document.querySelectorAll(".moment");
 
-  // Intro animation
-  gsap.from(".title", {
-    opacity: 0,
-    y: -80,
-    duration: 2,
-    ease: "power3.out"
-  });
+    window.addEventListener("scroll", function () {
+        moments.forEach(el => {
+            const rect = el.getBoundingClientRect();
+            if (rect.top < window.innerHeight - 100) {
+                gsap.to(el, {opacity:1, y:0, duration:1});
+            }
+        });
 
-  gsap.from(".subtitle", {
-    opacity: 0,
-    delay: 1,
-    duration: 2
-  });
+        // Move boy based on scroll
+        const scrollPercent = window.scrollY / (document.body.scrollHeight - window.innerHeight);
+        gsap.to(".boy", {
+            x: scrollPercent * (window.innerWidth - 100),
+            duration: 0.3
+        });
 
-  // Timeline fade animation
-  gsap.utils.toArray(".moment").forEach(section => {
-    gsap.fromTo(section,
-      { opacity: 0, y: 100 },
-      {
-        opacity: 1,
-        y: 0,
-        duration: 1.5,
-        scrollTrigger: {
-          trigger: section,
-          start: "top 85%",
-          toggleActions: "play none none none"
+        // Fire particles at bottom
+        if (window.innerHeight + window.scrollY >= document.body.offsetHeight - 2) {
+            createParticles();
         }
-      }
-    );
-  });
-
-  // Boy running animation
-  gsap.to(".boy", {
-    x: window.innerWidth - 200,
-    scrollTrigger: {
-      trigger: ".timeline",
-      start: "top center",
-      end: "bottom center",
-      scrub: true
-    }
-  });
-
-  // Particle Hug
-  const canvas = document.getElementById("hugCanvas");
-  const ctx = canvas.getContext("2d");
-
-  canvas.width = window.innerWidth;
-  canvas.height = window.innerHeight;
-
-  let particles = [];
-
-  function createParticles() {
-    for (let i = 0; i < 250; i++) {
-      particles.push({
-        x: canvas.width / 2,
-        y: canvas.height / 2,
-        vx: (Math.random() - 0.5) * 6,
-        vy: (Math.random() - 0.5) * 6,
-        life: 120
-      });
-    }
-  }
-
-  function animateParticles() {
-    ctx.clearRect(0, 0, canvas.width, canvas.height);
-    particles.forEach(p => {
-      p.x += p.vx;
-      p.y += p.vy;
-      p.life--;
-      ctx.fillStyle = "rgba(255,215,0,0.8)";
-      ctx.fillRect(p.x, p.y, 3, 3);
     });
-    particles = particles.filter(p => p.life > 0);
-    requestAnimationFrame(animateParticles);
-  }
 
-  ScrollTrigger.create({
-    trigger: ".timeline",
-    start: "bottom center",
-    onEnter: () => {
-      createParticles();
-      animateParticles();
+    // Countdown to 15 Aug 2026
+    const target = new Date("August 15, 2026 00:00:00").getTime();
+    const countdown = document.getElementById("countdown");
+
+    setInterval(function() {
+        const now = new Date().getTime();
+        const diff = target - now;
+
+        const days = Math.floor(diff / (1000*60*60*24));
+        const hours = Math.floor((diff % (1000*60*60*24)) / (1000*60*60));
+        const mins = Math.floor((diff % (1000*60*60)) / (1000*60));
+        const secs = Math.floor((diff % (1000*60)) / 1000);
+
+        countdown.innerHTML = 
+        `Anniversary Countdown ❤️ <br>
+         ${days} Days ${hours} Hrs ${mins} Min ${secs} Sec`;
+    }, 1000);
+
+    // Particle system
+    const canvas = document.getElementById("particles");
+    const ctx = canvas.getContext("2d");
+    canvas.width = window.innerWidth;
+    canvas.height = window.innerHeight;
+
+    function createParticles() {
+        for (let i=0; i<150; i++) {
+            let x = window.innerWidth/2;
+            let y = window.innerHeight/2;
+            let vx = (Math.random()-0.5)*8;
+            let vy = (Math.random()-0.5)*8;
+
+            animateParticle(x,y,vx,vy);
+        }
     }
-  });
+
+    function animateParticle(x,y,vx,vy) {
+        let life = 100;
+
+        function draw() {
+            if (life <= 0) return;
+
+            ctx.fillStyle = "rgba(255,215,0,0.8)";
+            ctx.fillRect(x,y,3,3);
+
+            x += vx;
+            y += vy;
+            life--;
+
+            requestAnimationFrame(draw);
+        }
+
+        draw();
+    }
 
 });
